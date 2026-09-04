@@ -4,6 +4,20 @@ async function buscarPokemon(nome) {
         return false;
     }
 
+    const apelidos = {
+        "giratina": "giratina-altered",
+        "deoxys": "deoxys-normal",
+        "wormadam": "wormadam-plant",
+        "shaymin": "shaymin-land",
+        "basculin": "basculin-red-striped",
+        "darmanitan": "darmanitan-standard",
+        "meloetta": "meloetta-aria",
+        "aegislash": "aegislash-shield",
+        "urshifu": "urshifu-single-strike"
+    };
+
+    
+
     try{
         
         const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${nome}`);
