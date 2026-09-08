@@ -13,14 +13,23 @@ async function buscarPokemon(nome) {
         "darmanitan": "darmanitan-standard",
         "meloetta": "meloetta-aria",
         "aegislash": "aegislash-shield",
-        "urshifu": "urshifu-single-strike"
+        "urshifu": "urshifu-single-strike",
+        "tornadus": "tornadus-incarnate",
+        "thundurus": "thundurus-incarnate",
+        "landorus": "landorus-incarnate",
+        "keldeo": "keldeo-ordinary"
     };
 
-    
+    const nomeTratado = nome.toLowerCase().trim();
+    const nomeBusca = apelidos[nomeTratado] || nomeTratado;
+
+
+
+
 
     try{
         
-        const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${nome}`);
+        const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${nomeBusca}`);
         if (!resposta.ok) {
             console.log("\n Pokédex: Pokémon não encontrado. \n");
             return false;
@@ -36,14 +45,38 @@ async function buscarPokemon(nome) {
         
         //busca o movimento do pokemon 
         const movimentos = dados.moves.slice(0, 4).map(item => item.move.name).join(", ");
-        
+
+        let outrasFormasTexto = ""; 
+        try{
+            const respostaEspecie = await fetch(dados.species.url);
+            if (respostaEspecie.ok) {
+                const dadosEspecie = await respostaEspecie.json();
+
+                const outrasFormas = dadosEspecie.varieties
+                .map(v => v.pokemon.name)
+                .filter(nomeForma => nomeForma !== dados.name);
+
+                if (outrasFormas.length > 0){
+                    outrasFormasTexto = outrasFormas.join(", ")
+                }
+            }
+        } catch (e) {
+
+        }
+        console.log("==========================")       
         console.log(("ID:"), dados.id);
         console.log(("Nome:"), dados.name);
         console.log(("Tipo(s):"), tipos);
         console.log(("Habilidade(s): "), habilidades);
         console.log(("Movimentos:"), movimentos);
-        console.log(("Altura:"), dados.height);
-        console.log(("Peso:"), dados.weight);
+        console.log(("Altura:"), dados.height / 10, "m");
+        console.log(("Peso:"), dados.weight / 10, "kg");
+
+
+        if (outrasFormasTexto) {
+            console.log("Outras formas:", outrasFormasTexto);
+        }
+        console.log("==========================")
 
         return true;
 
@@ -52,6 +85,9 @@ async function buscarPokemon(nome) {
         console.log("Pokédex: Falha ao se comunicar com a API", erro.message);
         return false;
     }
+
+    
+
 };
 
 module.exports = buscarPokemon;
