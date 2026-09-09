@@ -63,28 +63,46 @@ async function buscarPokemon(nome) {
         } catch (e) {
 
         }
-        console.log("==========================")       
-        console.log(("ID:"), dados.id);
-        console.log(("Nome:"), dados.name);
-        console.log(("Tipo(s):"), tipos);
-        console.log(("Habilidade(s): "), habilidades);
-        console.log(("Movimentos:"), movimentos);
-        console.log(("Altura:"), dados.height / 10, "m");
-        console.log(("Peso:"), dados.weight / 10, "kg");
-
+        console.log("==========================");       
+        console.log("ID:", dados.id);
+        console.log("Nome:", dados.name);
+        console.log("Tipo(s):", tipos);
+        console.log("Habilidade(s):", habilidades);
+        console.log("Movimentos:", movimentos);
+        console.log("Altura:", dados.height / 10, "m");
+        console.log("Peso:", dados.weight / 10, "kg");
 
         if (outrasFormasTexto) {
             console.log("Outras formas:", outrasFormasTexto);
         }
-        console.log("==========================")
+        console.log("==========================");
 
-        return true;
-
+        return {
+            id: dados.id,
+            nome: dados.name,
+            tipos: tipos,
+            habilidades: habilidades,
+            movimentos: movimentos,
+            altura: `${dados.height / 10} m`,
+            peso: `${dados.weight / 10} kg`,
+            outrasFormas: outrasFormasTexto || "Nenhuma outra forma"
+        };
         
     } catch (erro) {
         console.log("Pokédex: Falha ao se comunicar com a API", erro.message);
+        
         return false;
-    }
+        
+        
+        
+        
+};
+
+if (outrasFormasTexto) {
+    resultado.outrasFormas = outrasFormasTexto;
+}
+
+return resultado;
 
     
 
